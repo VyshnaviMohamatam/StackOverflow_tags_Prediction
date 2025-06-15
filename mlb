@@ -1,0 +1,5 @@
+from sklearn.preprocessing import MultiLabelBinarizer
+
+mlb = MultiLabelBinarizer()
+y_train_multilabel = mlb.fit_transform(y_train)
+y_test_multilabel = mlb.transform(y_test)
