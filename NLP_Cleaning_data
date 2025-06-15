@@ -1,0 +1,48 @@
+import re
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import nltk
+
+# Download nltk resources (only once)
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+stop = set(stopwords.words('english'))
+lemmatizer = WordNetLemmatizer()
+
+# Tags you want to preserve as they are (customize as needed)
+special_tokens = {
+    'machine-learning', 'deep-learning', 'scikit-learn',
+    'tensorflow', 'pytorch', 'natural-language-processing','keras'
+    'computer-vision', 'data-science', 'k-means', 'xgboost','neural-network'
+}
+
+def clean(text):
+    text = str(text).lower()
+    text = re.sub(r'<.*?>', ' ', text)  # remove HTML tags
+
+    tokens = []
+    for token in text.split():
+        if token in special_tokens:
+            tokens.append(token)
+            continue
+
+        token = re.sub(r'[^a-z]', '', token)  # keep only letters
+        if not token or token in stop:
+            continue
+
+        token = lemmatizer.lemmatize(token)
+        tokens.append(token)
+
+    return tokens
+from nltk.stem import SnowballStemmer
+sno = SnowballStemmer('english') 
+def stem(tokens):
+    fil = []
+    for token in tokens:
+        if token not in stop:
+            s = sno.stem(token).encode('utf8')  # stem and encode as bytes
+            fil.append(s)
+    # join bytes with space, then decode back to string
+    s = b' '.join(fil)
+    return s.decode('utf8')
