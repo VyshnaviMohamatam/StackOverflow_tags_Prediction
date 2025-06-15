@@ -1,0 +1,22 @@
+# creating the new columns 
+# cleaned questions and cleaned tags
+# after cleaning the data
+def clean_tags(tags_str):
+    cleaned = re.sub('[^A-Za-z#+-]', ' ', tags_str)  # keep letters and #, +, -
+    cleaned = re.sub('\s+', ' ', cleaned).strip()     # remove extra spaces
+    return cleaned
+
+# Apply tag cleaning
+final_data['cleanTags'] = final_data.tags.apply(clean_tags)
+ques = []
+for j in final_data.title:
+    ques.append(stem(clean(j)))
+
+final_data['cleanQues'] = ques
+import re
+
+ctags = []
+for i in final_data.tags:
+    ctags.append(re.sub('[^A-Za-z#+-]', ' ', i)) 
+
+final_data['cleanTags'] = ctags
